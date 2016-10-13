@@ -6,8 +6,10 @@ module testbench;
 
 	wire [7:0] behave_sum;
 	wire [7:0] dataflow_sum;
+	wire[7:0] struct_sum;
 	wire behave_carry;
 	wire dataflow_carry;
+	wire struct_carry;
 
 	adder_beh test_behave (
 		.sum(behave_sum), 
@@ -19,6 +21,13 @@ module testbench;
 	adder_dataflow test_dataflow(
 		.sum(dataflow_sum), 
 		.carry(dataflow_carry), 
+		.a(a), 
+		.b(b),
+		.cin(cin)
+	);
+	adder_struct test_struct(
+		.sum(struct_sum), 
+		.cout(struct_carry), 
 		.a(a), 
 		.b(b),
 		.cin(cin)
