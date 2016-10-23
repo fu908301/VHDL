@@ -4,19 +4,13 @@ module pipeline(A,B,C,D,clk,rst);
 	input [7:0] C;
 	input clk;
 	input rst;
-	output [15:0] D;
-	wire [7:0] Add;
-	wire [7:0] tempAB;
-	wire [7:0] tempC;
-	wire [15:0] tempABC;
+	output reg [15:0] D;
 	reg [15:0] Reg1;
 	reg [15:0] Reg2;
-	assign Reg1[7:0] = Add;
-	assign Reg1[15:8] = C;
-	assign Reg2 = tempABC;
 	always@(A or B)
 	begin
-		Add = A + B;
+		Reg1[7:0] = A + B;
+		Reg1[15:0] = C;
 	end
 	always@(posedge clk or negedge rst)
 	begin
@@ -41,13 +35,8 @@ module pipeline(A,B,C,D,clk,rst);
 		end
 	else
 		begin
-			tempAB <= Reg1[7:0];
-			tempC <= Reg1[15:8];
+			Reg2[15:0] <=  Reg1[7:0] * Reg1[15:8];			
 		end
-	end
-	always@(tempAB or tempC)
-	begin
-		tempABC = tempAB * tempC;
 	end
 	always@(posedge clk or negedge rst)
 	begin
@@ -72,7 +61,7 @@ module pipeline(A,B,C,D,clk,rst);
 		end
 	else 
 		begin
-			D <= Reg2[15:0]
+			D[15:0] <= Reg2[15:0]
 		end
 	end
 
