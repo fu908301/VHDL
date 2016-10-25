@@ -4,14 +4,14 @@ module pipeline(A,B,C,D,clk,rst);
 	input [7:0] C;
 	input clk;
 	input rst;
-	output reg [15:0] D;
-	reg [15:0] Reg1;
-	reg [15:0] Reg2;
-	always@(A or B)
-	begin
-		Reg1[7:0] = A + B;
-		Reg1[15:0] = C;
-	end
+	output [16:0] D;
+	reg [16:0] Reg1;
+	reg [16:0] Reg2;
+	wire [8:0] Add;
+	wire [16:0] Cross;
+	assign Add = A + B;
+	assign Cross = Reg1[8:0] * Reg1[16:9];
+	assign D[16:0] = Reg2[16:0];
 	always@(posedge clk or negedge rst)
 	begin
 	if(!rst)
@@ -32,10 +32,13 @@ module pipeline(A,B,C,D,clk,rst);
 			Reg1[13] <=  32'd0;
 			Reg1[14] <=  32'd0;
 			Reg1[15] <=  32'd0;
+			Reg1[16] <=  32'd0;
+
 		end
 	else
 		begin
-			Reg2[15:0] <=  Reg1[7:0] * Reg1[15:8];			
+			Reg1[8:0] <= Add;
+			 Reg1[16:9] <= C;		
 		end
 	end
 	always@(posedge clk or negedge rst)
@@ -58,10 +61,12 @@ module pipeline(A,B,C,D,clk,rst);
 			Reg2[13] <=  32'd0;
 			Reg2[14] <=  32'd0;
 			Reg2[15] <=  32'd0;
+			Reg2[16] <=  32'd0;
+
 		end
 	else 
 		begin
-			D[15:0] <= Reg2[15:0]
+			Reg2[16:0] <= Cross;
 		end
 	end
 
